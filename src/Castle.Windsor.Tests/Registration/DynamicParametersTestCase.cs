@@ -127,21 +127,6 @@ namespace Castle.MicroKernel.Tests.Registration
 		}
 
 		[Test]
-		public void DynamicParameters_will_not_enforce_passed_IDictionary_to_be_writeable()
-		{
-			var wasCalled = false;
-			Kernel.Register(Component.For<DefaultCustomer>().LifeStyle.Transient.DynamicParameters((k, d) =>
-			{
-				Assert.Throws(typeof(NotSupportedException), () => d.Add("foo", "It will throw"));
-				wasCalled = true;
-			}));
-
-			Kernel.Resolve<DefaultCustomer>(new Arguments().InsertNamed(new Dictionary<string,object>()));
-
-			Assert.IsTrue(wasCalled);
-		}
-
-		[Test]
 		public void Should_handle_multiple_calls()
 		{
 			var arg1 = "bar";

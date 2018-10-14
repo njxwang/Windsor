@@ -383,16 +383,6 @@ namespace CastleTests.Pools
 				throw new NotImplementedException();
 			}
 
-			public object Resolve(string key, object argumentsAsAnonymousType)
-			{
-				throw new NotImplementedException();
-			}
-
-			public object Resolve(string key, IDictionary arguments)
-			{
-				throw new NotImplementedException();
-			}
-
 			public IComponentModelBuilder ComponentModelBuilder { get; private set; }
 			public IConfigurationStore ConfigurationStore { get; set; }
 			public GraphNode[] GraphNodes { get; private set; }

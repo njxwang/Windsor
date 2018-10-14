@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+﻿// Copyright 2004-2018 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,14 +22,15 @@ namespace Castle.MicroKernel
 	using Castle.Windsor;
 
 	/// <summary>
-	/// Represents collection of named or typed arguments used for dependencies resolved via <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
+	/// Represents a collection of named and typed arguments used for dependencies resolved via <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 	/// Please see: https://github.com/castleproject/Windsor/blob/master/docs/arguments.md
 	/// </summary>
 	public class Arguments : IDictionary
 	{
-		private bool isReadOnly;
-		private readonly IDictionary dictionary;
 		private static readonly ArgumentsComparer Comparer = new ArgumentsComparer();
+
+		private readonly IDictionary dictionary;
+		private bool isReadOnly;
 
 		/// <summary>
 		/// Constructor for creating named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
@@ -42,23 +43,22 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Constructor for creating named dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 		/// </summary>
-		/// <param named="named"></param>
-		/// <param named="value"></param>
-		public Arguments(string named, object value) : this()
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public Arguments(string name, object value) : this()
 		{
-			dictionary[named] = value;
+			dictionary[name] = value;
 		}
 
 		/// <summary>
 		/// Constructor for creating typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 		/// </summary>
-		/// <param named="typed"></param>
-		/// <param named="value"></param>
-		public Arguments(Type typed, object value) : this()
+		/// <param name="type"></param>
+		/// <param name="value"></param>
+		public Arguments(Type type, object value) : this()
 		{
-			dictionary[typed] = value;
+			dictionary[type] = value;
 		}
-
 
 		/// <summary>
 		/// Constructor for creating named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
@@ -99,17 +99,12 @@ namespace Castle.MicroKernel
 
 		bool IDictionary.IsReadOnly => isReadOnly;
 
-		public static readonly Arguments Empty = new Arguments() { isReadOnly = true };
+		public static readonly Arguments Empty = new Arguments { isReadOnly = true };
 
-		/// <summary>
-		/// Method for adding named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
-		/// </summary>
-		/// <param named="namedOrTyped">Type or named parameter</param>
-		/// <param named="value">Instance dependency</param>
-		public void Add(object namedOrTyped, object value)
+		public void Add(object key, object value)
 		{
 			EnsureWritable();
-			dictionary.Add(namedOrTyped, value);
+			dictionary.Add(key, value);
 		}
 
 		public void Clear()
@@ -120,11 +115,6 @@ namespace Castle.MicroKernel
 
 		public Arguments Clone()
 		{
-			if (dictionary is Dictionary<object, object>)
-			{
-				return new Arguments(dictionary);
-			}
-
 			return new Arguments(dictionary);
 		}
 
@@ -149,65 +139,48 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Inserts a new named argument with a given dependency. If an argument for this named key already exists, it will be overwritten.
+		/// Inserts a named argument. If the argument already exists it will be overwritten.
 		/// </summary>
-		/// <param named="namedOrTyped">Named parameter</param>
-		/// <param named="value">Instance dependency</param>
-		public virtual Arguments Insert(string named, object value)
+		public virtual Arguments Insert(string key, object value)
 		{
-			this[named] = value;
+			this[key] = value;
 			return this;
 		}
 
 		/// <summary>
-		/// Inserts dictionary with named/typed arguments. If an argument for this named/typed key already exists, it will be overwritten.
+		/// Inserts a set of named and/or typed arguments. If an argument already exists it will be overwritten.
 		/// </summary>
-		/// <param named="values"></param>
-		/// <returns><see cref="Arguments"/></returns>
 		public virtual Arguments Insert(IDictionary values)
 		{
 			foreach (DictionaryEntry entry in values)
 			{
 				if (entry.Key is string || entry.Key is Type)
 				{
-					dictionary[entry.Key] = entry.Value;
+					this[entry.Key] = entry.Value;
 				}
 				else
 				{
-					throw new ArgumentException($"The argument namedOrTyped '{entry.Key}' should be of type System.String or System.Type");
+					throw new ArgumentException($"The argument '{entry.Key}' should be of type string or System.Type");
 				}
 			}
 			return this;
 		}
 
 		/// <summary>
-		/// Method that can be used to named arguments into <see cref="Arguments"/> from a read-only dictionary.
+		/// Inserts a set of named arguments, <see cref="Dictionary{TKey,TValue}"/> implements <see cref="IReadOnlyDictionary{TKey,TValue}"/>.
 		/// </summary>
-		/// <param named="values"><see cref="IReadOnlyDictionary{S, O}"/> where the dictionary is shallow copied up front into <see cref="Arguments"/> and then used as dependencies</param>
-		/// <returns><see cref="Arguments"/></returns>
 		public virtual Arguments InsertNamed(IReadOnlyDictionary<string, object> values)
 		{
-			isReadOnly = false;
 			foreach (var entry in values)
 			{
-				if (entry.Key is string)
-				{
-					dictionary[entry.Key] = entry.Value;
-				}
-				else
-				{
-					throw new ArgumentException($"The argument namedOrTyped '{entry.Key}' should be of type System.String");
-				}
+				this[entry.Key] = entry.Value;
 			}
-
-			isReadOnly = true;
 			return this;
 		}
 
 		/// <summary>
-		/// Inserts a set of typed arguments. Property names of the anonymous type will be used as namedOrTyped.
+		/// Inserts a set of named arguments, this supports plain types and anonymous types.
 		/// </summary>
-		/// <param named="instance">Named property</param>
 		public virtual Arguments InsertProperties(object instance)
 		{
 			foreach (DictionaryEntry item in new ReflectionBasedDictionaryAdapter(instance))
@@ -219,16 +192,16 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Inserts a new typed argument with given instance. If an argument for this type already exists, it will be overwritten.
+		/// Inserts a new typed argument with given instance. If an argument for this type already exists it will be overwritten.
 		/// </summary>
-		public virtual Arguments InsertTyped(Type typed, object value)
+		public virtual Arguments InsertTyped(Type key, object value)
 		{
-			this[typed] = value;
+			this[key] = value;
 			return this;
 		}
 
 		/// <summary>
-		/// Inserts a new typed argument with given type. If an argument for this type already exists, it will be overwritten.
+		/// Inserts a new typed argument with given type. If an argument for this type already exists it will be overwritten.
 		/// </summary>
 		public virtual Arguments InsertTyped<TDependencyType>(TDependencyType value)
 		{
@@ -237,7 +210,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Inserts many new typed argument from a params array. If an argument for this type already exists, it will be overwritten.
+		/// Inserts many new typed arguments from a params array. If an argument for this type already exists it will be overwritten.
 		/// </summary>
 		public virtual Arguments InsertTyped(params object[] values)
 		{
@@ -248,10 +221,10 @@ namespace Castle.MicroKernel
 			return this;
 		}
 
-		public void Remove(object namedOrTyped)
+		public void Remove(object key)
 		{
 			EnsureWritable();
-			dictionary.Remove(namedOrTyped);
+			dictionary.Remove(key);
 		}
 
 		private void EnsureWritable()
@@ -270,7 +243,7 @@ namespace Castle.MicroKernel
 				{
 					return StringComparer.OrdinalIgnoreCase.Equals(a, y as string);
 				}
-				return x.Equals(y);
+				return object.Equals(x, y);
 			}
 
 			public int GetHashCode(object obj)

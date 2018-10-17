@@ -25,7 +25,7 @@ new Arguments(typeof(MyClass), new MyClass());
 
 ### Fluent Interface
 
-:information_source: **Inserts overwrites:** Insert methods overwrite existing keys rather than throw.
+:information_source: **Insert methods overwrite:** Insert methods overwrite existing keys rather than throw an exception.
 
 #### Named Arguments
 
@@ -55,7 +55,7 @@ new Arguments()
 	.InsertTyped<IService>(new MyService());
 ```
 
-:information_source: **Typed arguments are matched exactly:** When you don't specify the type of the argument it's concrete type will be used. For example, if you pass a `MemoryStream` it will only match to a dependency of type `MemoryStream`, but not of the base type `Stream`. If you want to match it to `Stream` specify the type explicitly.
+:information_source: **Typed arguments are matched exactly:** When you don't specify the type of the argument, its concrete type will be used. For example, if you pass a `MemoryStream` it will only match to a dependency of type `MemoryStream`, but not of the base type `Stream`. If you want to match it to `Stream` specify the type explicitly.
 
 #### Named and/or Typed Arguments Collection
 

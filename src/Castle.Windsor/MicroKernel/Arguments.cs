@@ -63,8 +63,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Constructor for creating named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 		/// </summary>
-		public Arguments(IDictionary values)
-			: this()
+		public Arguments(IDictionary values) : this()
 		{
 			foreach (DictionaryEntry entry in values)
 			{
@@ -141,7 +140,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts a named argument. If the argument already exists it will be overwritten.
 		/// </summary>
-		public virtual Arguments Insert(string key, object value)
+		public Arguments Insert(string key, object value)
 		{
 			this[key] = value;
 			return this;
@@ -150,7 +149,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts a set of named and/or typed arguments. If an argument already exists it will be overwritten.
 		/// </summary>
-		public virtual Arguments Insert(IDictionary values)
+		public Arguments Insert(IDictionary values)
 		{
 			foreach (DictionaryEntry entry in values)
 			{
@@ -160,7 +159,7 @@ namespace Castle.MicroKernel
 				}
 				else
 				{
-					throw new ArgumentException($"The argument '{entry.Key}' should be of type string or System.Type");
+					throw new ArgumentException($"The argument '{entry.Key}' should be of type string or System.Type.");
 				}
 			}
 			return this;
@@ -169,7 +168,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts a set of named arguments, <see cref="Dictionary{TKey,TValue}"/> implements <see cref="IReadOnlyDictionary{TKey,TValue}"/>.
 		/// </summary>
-		public virtual Arguments InsertNamed(IReadOnlyDictionary<string, object> values)
+		public Arguments InsertNamed(IReadOnlyDictionary<string, object> values)
 		{
 			foreach (var entry in values)
 			{
@@ -181,7 +180,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts a set of named arguments, this supports plain types and anonymous types.
 		/// </summary>
-		public virtual Arguments InsertProperties(object instance)
+		public Arguments InsertProperties(object instance)
 		{
 			foreach (DictionaryEntry item in new ReflectionBasedDictionaryAdapter(instance))
 			{
@@ -194,7 +193,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts a new typed argument with given instance. If an argument for this type already exists it will be overwritten.
 		/// </summary>
-		public virtual Arguments InsertTyped(Type key, object value)
+		public Arguments InsertTyped(Type key, object value)
 		{
 			this[key] = value;
 			return this;
@@ -203,7 +202,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts a new typed argument with given type. If an argument for this type already exists it will be overwritten.
 		/// </summary>
-		public virtual Arguments InsertTyped<TDependencyType>(TDependencyType value)
+		public Arguments InsertTyped<TDependencyType>(TDependencyType value)
 		{
 			InsertTyped(typeof(TDependencyType), value);
 			return this;
@@ -212,7 +211,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Inserts many new typed arguments from a params array. If an argument for this type already exists it will be overwritten.
 		/// </summary>
-		public virtual Arguments InsertTyped(params object[] values)
+		public Arguments InsertTyped(params object[] values)
 		{
 			foreach (var value in values)
 			{

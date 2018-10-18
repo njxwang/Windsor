@@ -50,7 +50,7 @@ namespace Castle.Windsor.Tests.MicroKernel
 
 			var dictionaryProperty = new Dictionary<string, string>();
 
-			var obj = container.Resolve<HasDictionaryDependency>(new Arguments().InsertProperties(new { dictionaryProperty }));
+			var obj = container.Resolve<HasDictionaryDependency>(new Arguments().AddNamedProperties(new { dictionaryProperty }));
 			Assert.AreSame(dictionaryProperty, obj.DictionaryProperty);
 		}
 

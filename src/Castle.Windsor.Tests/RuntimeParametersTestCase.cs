@@ -78,7 +78,7 @@ namespace Castle.MicroKernel.Tests
 			                   Component.For<CompC>().Instance(new CompC(0)));
 
 			var c2 = new CompC(42);
-			var args = new Arguments().InsertTyped(c2);
+			var args = new Arguments().AddTyped(c2);
 			var b = Container.Resolve<CompB>(args);
 
 			Assert.AreSame(c2, b.Compc);

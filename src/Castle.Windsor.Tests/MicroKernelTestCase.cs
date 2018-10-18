@@ -203,7 +203,7 @@ namespace CastleTests
 		{
 			Kernel.Register(Component.For<ICommon>()
 			                	.ImplementedBy<CommonImplWithDependency>()
-			                	.DynamicParameters((k, d) => d.InsertTyped(typeof(ICustomer), new CustomerImpl()))
+			                	.DynamicParameters((k, d) => d.AddTyped(typeof(ICustomer), new CustomerImpl()))
 				);
 
 			var services = Kernel.ResolveAll<ICommon>();

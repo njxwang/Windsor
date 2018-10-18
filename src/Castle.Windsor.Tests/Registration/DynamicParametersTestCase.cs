@@ -40,7 +40,7 @@ namespace Castle.MicroKernel.Tests.Registration
 				wasCalled = true;
 			}));
 
-			Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).Insert("arg1", "foo"));
+			Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).AddNamed("arg1", "foo"));
 
 			Assert.IsTrue(wasCalled);
 		}
@@ -135,7 +135,7 @@ namespace Castle.MicroKernel.Tests.Registration
 			                	.LifeStyle.Transient
 			                	.DynamicParameters((k, d) => { d["arg1"] = arg1; })
 			                	.DynamicParameters((k, d) => { d["arg2"] = arg2; }));
-			var component = Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).Insert("arg1", "foo"));
+			var component = Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).AddNamed("arg1", "foo"));
 			Assert.AreEqual(arg1, component.Arg1);
 			Assert.AreEqual(arg2, component.Arg2);
 		}
@@ -150,7 +150,7 @@ namespace Castle.MicroKernel.Tests.Registration
 				arg1 = (string)d["arg1"];
 				arg2 = (int)d["arg2"];
 			}));
-			var component = Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).Insert("arg1", "foo"));
+			var component = Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).AddNamed("arg1", "foo"));
 			Assert.AreEqual("foo", arg1);
 			Assert.AreEqual(2, arg2);
 		}
@@ -172,7 +172,7 @@ namespace Castle.MicroKernel.Tests.Registration
 				d["arg1"] = arg1;
 				d["arg2"] = arg2;
 			}));
-			var component = Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).Insert("arg1", "foo"));
+			var component = Kernel.Resolve<ClassWithArguments>(new Arguments("arg2", 2).AddNamed("arg1", "foo"));
 			Assert.AreEqual(arg1, component.Arg1);
 			Assert.AreEqual(arg2, component.Arg2);
 		}

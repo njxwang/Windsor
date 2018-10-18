@@ -45,21 +45,17 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Constructor for creating named dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="value"></param>
-		public Arguments(string name, object value) : this()
+		public Arguments(string key, object value) : this()
 		{
-			dictionary[name] = value;
+			dictionary[key] = value;
 		}
 
 		/// <summary>
 		/// Constructor for creating typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="value"></param>
-		public Arguments(Type type, object value) : this()
+		public Arguments(Type key, object value) : this()
 		{
-			dictionary[type] = value;
+			dictionary[key] = value;
 		}
 
 		/// <summary>

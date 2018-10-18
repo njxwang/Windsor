@@ -38,25 +38,25 @@ namespace CastleTests
 		[Test]
 		public void Can_Resolve_using_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().InsertProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().InsertProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
 		public void Can_Resolve_using_Type_and_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().InsertProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Type_and_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().InsertProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
@@ -84,21 +84,21 @@ namespace CastleTests
 		public void Can_ResolveAll_using_Type_and_Arguments_as_Dictionary()
 		{
 			var dictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().InsertNamed(dictionary)));
+			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().AddNamed(dictionary)));
 		}
 
 		[Test]
 		public void Can_Resolve_using_Arguments_as_ReadOnlyDictionary()
 		{
 			IReadOnlyDictionary<string, object> readOnlyDictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().InsertNamed(readOnlyDictionary)));
+			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().AddNamed(readOnlyDictionary)));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Arguments_as_ReadOnlyDictionary()
 		{
 			IReadOnlyDictionary<string, object> readOnlyDictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().InsertNamed(readOnlyDictionary)));
+			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().AddNamed(readOnlyDictionary)));
 		}
 
 		[Test]
@@ -119,14 +119,14 @@ namespace CastleTests
 		public void Can_Resolve_using_Type_and_Arguments_as_ReadOnlyDictionary()
 		{
 			IReadOnlyDictionary<string, object> readOnlyDictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().InsertNamed(readOnlyDictionary)));
+			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().AddNamed(readOnlyDictionary)));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Type_and_Arguments_as_ReadOnlyDictionary()
 		{
 			IReadOnlyDictionary<string, object> readOnlyDictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().InsertNamed(readOnlyDictionary)));
+			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().AddNamed(readOnlyDictionary)));
 		}
 
 		[Test]
@@ -146,25 +146,25 @@ namespace CastleTests
 		[Test]
 		public void Can_Resolve_using_Arguments_as_TypedComponents()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().InsertTyped(new Dependency())));
+			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().AddTyped(new Dependency())));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Arguments_as_TypedComponents()
 		{
-			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().InsertTyped(new Dependency())));
+			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().AddTyped(new Dependency())));
 		}
 
 		[Test]
 		public void Can_Resolve_using_Type_and_Arguments_as_TypedComponents()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().InsertTyped(new Dependency())));
+			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().AddTyped(new Dependency())));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Type_and_Arguments_as_TypedComponents()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve(typeof(IDependencyWithManyImplementations), new Arguments().InsertTyped(new Dependency())));
+			Assert.DoesNotThrow(() => Container.Resolve(typeof(IDependencyWithManyImplementations), new Arguments().AddTyped(new Dependency())));
 		}
 
 		private class Dependency { }

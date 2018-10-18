@@ -59,7 +59,7 @@ namespace CastleTests.Pools
 			var result = false;
 			var container = new WindsorContainer();
 			container.Register(Component.For<DisposableMockObject>().LifestylePooled(1, 5));
-			container.Release(container.Resolve<DisposableMockObject>(new Arguments().InsertProperties(new
+			container.Release(container.Resolve<DisposableMockObject>(new Arguments().AddNamedProperties(new
 			{
 				disposeAction = new Action(() => { result = true; })
 			})));

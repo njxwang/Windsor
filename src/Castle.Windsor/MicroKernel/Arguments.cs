@@ -35,7 +35,7 @@ namespace Castle.MicroKernel
 		private bool isReadOnly;
 
 		/// <summary>
-		/// Constructor for creating named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
+		/// Initializes a new instance of the <see cref="Arguments"/> class that is empty.
 		/// </summary>
 		public Arguments()
 		{
@@ -43,7 +43,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Constructor for creating named dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
+		/// Initializes a new instance of the <see cref="Arguments"/> class that contains the specified named argument.
 		/// </summary>
 		public Arguments(string key, object value) : this()
 		{
@@ -51,7 +51,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Constructor for creating typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
+		/// Initializes a new instance of the <see cref="Arguments"/> class that contains the specified typed argument.
 		/// </summary>
 		public Arguments(Type key, object value) : this()
 		{
@@ -59,18 +59,18 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Constructor for creating named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
+		/// Initializes a new instance of the <see cref="Arguments"/> class that contains elements copied from the specified <see cref="IDictionary"/>.
 		/// </summary>
-		public Arguments(IDictionary values) : this()
+		public Arguments(IDictionary arguments) : this()
 		{
-			foreach (DictionaryEntry entry in values)
+			foreach (DictionaryEntry item in arguments)
 			{
-				Add(entry.Key, entry.Value);
+				Add(item.Key, item.Value);
 			}
 		}
 
 		/// <summary>
-		/// Indexer for creating named/typed dependency arguments for <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
+		/// Gets or sets the value with the specified key.
 		/// </summary>
 		public object this[object key]
 		{

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Castle.Windsor.Extensions
+namespace Castle.Windsor
 {
 	using System;
 	using System.Collections.Generic;

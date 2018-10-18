@@ -25,7 +25,7 @@ namespace Castle.MicroKernel
 	/// Represents a collection of named and typed arguments used for dependencies resolved via <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
 	/// Please see: https://github.com/castleproject/Windsor/blob/master/docs/arguments.md
 	/// </summary>
-	public class Arguments : IDictionary
+	public sealed class Arguments : IDictionary
 	{
 		private static readonly ArgumentsComparer Comparer = new ArgumentsComparer();
 

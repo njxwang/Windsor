@@ -142,7 +142,7 @@ namespace Castle.Windsor
 		/// <param name = "key"></param>
 		/// <param name = "service"></param>
 		/// <returns></returns>
-		object Resolve(String key, Type service);
+		object Resolve(string key, Type service);
 
 		/// <summary>
 		///   Returns a component instance by the service
@@ -180,7 +180,7 @@ namespace Castle.Windsor
 		/// <param name = "key">Component's key</param>
 		/// <typeparam name = "T">Service type</typeparam>
 		/// <returns>The Component instance</returns>
-		T Resolve<T>(String key);
+		T Resolve<T>(string key);
 
 		/// <summary>
 		///   Returns a component instance by the key

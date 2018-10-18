@@ -166,13 +166,13 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Inserts a set of named arguments, <see cref="Dictionary{TKey,TValue}"/> implements <see cref="IReadOnlyDictionary{TKey,TValue}"/>.
+		/// Inserts a set of named arguments, <see cref="Dictionary{TKey,TValue}"/>.
 		/// </summary>
-		public Arguments InsertNamed(IReadOnlyDictionary<string, object> values)
+		public Arguments InsertNamed(IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			foreach (var entry in values)
+			foreach (var item in arguments)
 			{
-				this[entry.Key] = entry.Value;
+				this[item.Key] = item.Value;
 			}
 			return this;
 		}

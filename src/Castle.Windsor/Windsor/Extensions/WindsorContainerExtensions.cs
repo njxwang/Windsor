@@ -26,7 +26,7 @@ namespace Castle.Windsor
 		/// </summary>
 		public static object Resolve(this IWindsorContainer container, Type service, IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			return container.Kernel.Resolve(service, new Arguments().InsertNamed(arguments));
+			return container.Kernel.Resolve(service, new Arguments().AddNamed(arguments));
 		}
 
 		/// <summary>
@@ -34,7 +34,7 @@ namespace Castle.Windsor
 		/// </summary>
 		public static object Resolve(this IWindsorContainer container, string key, Type service, IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			return container.Kernel.Resolve(key, service, new Arguments().InsertNamed(arguments));
+			return container.Kernel.Resolve(key, service, new Arguments().AddNamed(arguments));
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Castle.Windsor
 		/// </summary>
 		public static T Resolve<T>(this IWindsorContainer container, IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			return (T)container.Kernel.Resolve(typeof(T), new Arguments().InsertNamed(arguments));
+			return (T)container.Kernel.Resolve(typeof(T), new Arguments().AddNamed(arguments));
 		}
 
 		/// <summary>
@@ -50,7 +50,7 @@ namespace Castle.Windsor
 		/// </summary>
 		public static T Resolve<T>(this IWindsorContainer container, string key, IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			return container.Kernel.Resolve<T>(key, new Arguments().InsertNamed(arguments));
+			return container.Kernel.Resolve<T>(key, new Arguments().AddNamed(arguments));
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Castle.Windsor
 		/// </summary>
 		public static Array ResolveAll(this IWindsorContainer container, Type service, IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			return container.Kernel.ResolveAll(service, new Arguments().InsertNamed(arguments));
+			return container.Kernel.ResolveAll(service, new Arguments().AddNamed(arguments));
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Castle.Windsor
 		/// </summary>
 		public static T[] ResolveAll<T>(this IWindsorContainer container, IEnumerable<KeyValuePair<string, object>> arguments)
 		{
-			return (T[])container.ResolveAll(typeof(T), new Arguments().InsertNamed(arguments));
+			return (T[])container.ResolveAll(typeof(T), new Arguments().AddNamed(arguments));
 		}
 	}
 }

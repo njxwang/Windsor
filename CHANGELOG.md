@@ -22,10 +22,10 @@ Breaking Changes:
 - Removal of deprecated member `LifestyleHandlerType`` on CustomLifestyleAttribute` (@fir3pho3nixx, #338)
 - Removed Event Wiring, Factory Support and Synchronize facilities (@jonorossi, #403)
 - Deprecated `WindsorContainer.Resolve(object/IDictionary)` in favour of `WindsorContainer.Resolve(Castle.MicroKernel.Arguments)` along with a reworked `Arguments` class and `IEnumerable<KeyValuePair<string, object>>` extension methods (@fir3pho3nixx, @jonorossi, #444)
-- Changed `CreationContext.AdditionalArguments` to use `Arguments` instead of `IDictionary` (@fir3pho3nixx, #346)
-- Removed `ComponentDependencyRegistrationExtensions(Insert, InsertAnonymous, InsertTyped, InsertTypedCollection)` and created Insert, InsertNamed, InsertProperties and InsertTyped `Arguments` instance methods  (@fir3pho3nixx, #346)
-- `ComponentRegistration.DependsOn` and `ComponentRegistration.DynamicParameters` changed to use `Arguments` via `DynamicParametersDelegate` (@fir3pho3nixx, #346)
-- Removed `IArgumentsComparer[]` constructors from `Arguments` (@fir3pho3nixx, #346)
+- Changed `CreationContext.AdditionalArguments` to use `Arguments` instead of `IDictionary` (@fir3pho3nixx, #444)
+- Removed `ComponentDependencyRegistrationExtensions(Insert, InsertAnonymous, InsertTyped, InsertTypedCollection)` and created Add, AddNamed and AddTyped `Arguments` instance methods (@fir3pho3nixx, @jonorossi, #444)
+- `ComponentRegistration.DependsOn` and `ComponentRegistration.DynamicParameters` changed to use `Arguments` via `DynamicParametersDelegate` (@fir3pho3nixx, #444)
+- Removed `IArgumentsComparer[]` constructors from `Arguments` (@fir3pho3nixx, #444)
 
 ## 4.1.1 (2018-10-15)
 

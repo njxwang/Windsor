@@ -27,6 +27,8 @@ namespace Castle.MicroKernel
 	/// </summary>
 	public sealed class Arguments : IDictionary
 	{
+		public static readonly Arguments Empty = new Arguments { isReadOnly = true };
+
 		private static readonly ArgumentsComparer Comparer = new ArgumentsComparer();
 
 		private readonly IDictionary dictionary;
@@ -98,12 +100,10 @@ namespace Castle.MicroKernel
 
 		bool IDictionary.IsReadOnly => isReadOnly;
 
-		public static readonly Arguments Empty = new Arguments { isReadOnly = true };
-
-		public void Add(object key, object value)
+		public void Remove(object key)
 		{
 			EnsureWritable();
-			dictionary.Add(key, value);
+			dictionary.Remove(key);
 		}
 
 		public void Clear()
@@ -137,38 +137,46 @@ namespace Castle.MicroKernel
 			return dictionary.GetEnumerator();
 		}
 
+		public void Add(object key, object value)
+		{
+			EnsureWritable();
+			dictionary.Add(key, value);
+		}
+
 		/// <summary>
-		/// Inserts a named argument. If the argument already exists it will be overwritten.
+		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
 		/// </summary>
-		public Arguments Insert(string key, object value)
+		public Arguments Add(IDictionary arguments)
+		{
+			foreach (DictionaryEntry item in arguments)
+			{
+				if (item.Key is string || item.Key is Type)
+				{
+					this[item.Key] = item.Value;
+				}
+				else
+				{
+					throw new ArgumentException($"The argument '{item.Key}' should be of type string or System.Type.");
+				}
+			}
+			return this;
+		}
+
+		// ===== Named =====
+
+		/// <summary>
+		/// Adds a named argument. If the argument already exists it will be overwritten.
+		/// </summary>
+		public Arguments AddNamed(string key, object value)
 		{
 			this[key] = value;
 			return this;
 		}
 
 		/// <summary>
-		/// Inserts a set of named and/or typed arguments. If an argument already exists it will be overwritten.
+		/// Adds a collection of named arguments, <see cref="Dictionary{TKey,TValue}"/> implements this interface.
 		/// </summary>
-		public Arguments Insert(IDictionary values)
-		{
-			foreach (DictionaryEntry entry in values)
-			{
-				if (entry.Key is string || entry.Key is Type)
-				{
-					this[entry.Key] = entry.Value;
-				}
-				else
-				{
-					throw new ArgumentException($"The argument '{entry.Key}' should be of type string or System.Type.");
-				}
-			}
-			return this;
-		}
-
-		/// <summary>
-		/// Inserts a set of named arguments, <see cref="Dictionary{TKey,TValue}"/>.
-		/// </summary>
-		public Arguments InsertNamed(IEnumerable<KeyValuePair<string, object>> arguments)
+		public Arguments AddNamed(IEnumerable<KeyValuePair<string, object>> arguments)
 		{
 			foreach (var item in arguments)
 			{
@@ -178,52 +186,47 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Inserts a set of named arguments, this supports plain types and anonymous types.
+		/// Adds a collection of named arguments from public properties of a standard or anonymous type.
 		/// </summary>
-		public Arguments InsertProperties(object instance)
+		public Arguments AddNamedProperties(object instance)
 		{
 			foreach (DictionaryEntry item in new ReflectionBasedDictionaryAdapter(instance))
 			{
 				this[item.Key] = item.Value;
 			}
-
 			return this;
 		}
 
+		// ===== Typed =====
+
 		/// <summary>
-		/// Inserts a new typed argument with given instance. If an argument for this type already exists it will be overwritten.
+		/// Adds a typed argumen. If the argument for this type already exists it will be overwritten.
 		/// </summary>
-		public Arguments InsertTyped(Type key, object value)
+		public Arguments AddTyped(Type key, object value)
 		{
 			this[key] = value;
 			return this;
 		}
 
 		/// <summary>
-		/// Inserts a new typed argument with given type. If an argument for this type already exists it will be overwritten.
+		/// Adds a typed argument. If the argument for this type already exists it will be overwritten.
 		/// </summary>
-		public Arguments InsertTyped<TDependencyType>(TDependencyType value)
+		public Arguments AddTyped<TDependencyType>(TDependencyType value)
 		{
-			InsertTyped(typeof(TDependencyType), value);
+			AddTyped(typeof(TDependencyType), value);
 			return this;
 		}
 
 		/// <summary>
-		/// Inserts many new typed arguments from a params array. If an argument for this type already exists it will be overwritten.
+		/// Adds a collection of typed arguments. If an argument for the type already exists it will be overwritten.
 		/// </summary>
-		public Arguments InsertTyped(params object[] values)
+		public Arguments AddTyped(params object[] arguments)
 		{
-			foreach (var value in values)
+			foreach (var item in arguments)
 			{
-				InsertTyped(value.GetType(), value);
+				AddTyped(item.GetType(), item);
 			}
 			return this;
-		}
-
-		public void Remove(object key)
-		{
-			EnsureWritable();
-			dictionary.Remove(key);
 		}
 
 		private void EnsureWritable()

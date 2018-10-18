@@ -25,7 +25,7 @@ new Arguments(typeof(MyClass), new MyClass());
 
 ### Fluent Interface
 
-:information_source: **Insert methods overwrite:** Insert methods overwrite existing keys rather than throw an exception.
+:information_source: **AddXXX methods overwrite:** these methods overwrite existing arguments rather than throw an exception.
 
 #### Named Arguments
 
@@ -33,26 +33,26 @@ Arguments will be matched by a string key in a case insensitive manner. For exam
 
 ```csharp
 new Arguments()
-	.Insert("key", 123456)
-	.InsertNamed(new Dictionary<string, string> { { "string-key", "string-value" } });
+	.AddNamed("key", 123456)
+	.AddNamed(new Dictionary<string, string> { { "string-key", "string-value" } });
 ```
 
 Named arguments can also be added from a plain old C# object or from properties of an anonymous type:
 ```csharp
 new Arguments()
-	.InsertProperties(myPOCO) // plain old C# object with public properties
-	.InsertProperties(new { logLevel = LogLevel.High }); // anonymous type
+	.AddNamedProperties(myPOCO) // plain old C# object with public properties
+	.AddNamedProperties(new { logLevel = LogLevel.High }); // anonymous type
 ```
 
 #### Typed Arguments
 
-Arguments can be matched by type as dependencies. 
+Arguments can be matched by type as dependencies:
 
 ```csharp
 new Arguments()
-	.InsertTyped(LogLevel.High, new AppConfig()) // params array
-	.InsertTyped(typeof(MyClass), new MyClass())
-	.InsertTyped<IService>(new MyService());
+	.AddTyped(LogLevel.High, new AppConfig()) // params array
+	.AddTyped(typeof(MyClass), new MyClass())
+	.AddTyped<IService>(new MyService());
 ```
 
 :information_source: **Typed arguments are matched exactly:** When you don't specify the type of the argument, its concrete type will be used. For example, if you pass a `MemoryStream` it will only match to a dependency of type `MemoryStream`, but not of the base type `Stream`. If you want to match it to `Stream` specify the type explicitly.
@@ -66,5 +66,5 @@ map.Add("string-key", 123456);
 map.Add(typeof(TypeKey), 123456);
 
 new Arguments()
- 	.Insert(map);
+ 	.Add(map);
 ```

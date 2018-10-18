@@ -55,12 +55,11 @@ namespace Castle.Facilities.TypedFactory.Internal
 				.LifeStyle.Transient
 				.Interceptors(new InterceptorReference(TypedFactoryFacility.InterceptorKey)).Last
 				.Activator<DelegateFactoryActivator>()
-				.DynamicParameters((k, d) =>
-				                   	{
-				                   		var selector = k.Resolve<ITypedFactoryComponentSelector>(TypedFactoryFacility.DefaultDelegateSelectorKey);
-				                   		d.InsertTyped(selector);
-				                   		return k2 => k2.ReleaseComponent(selector);
-				                   	})
+				.DynamicParameters((k, args) => {
+					var selector = k.Resolve<ITypedFactoryComponentSelector>(TypedFactoryFacility.DefaultDelegateSelectorKey);
+					args.AddTyped(selector);
+					return k2 => k2.ReleaseComponent(selector);
+				})
 				.AddAttributeDescriptor(TypedFactoryFacility.IsFactoryKey, bool.TrueString);
 		}
 

@@ -56,7 +56,7 @@ namespace CastleTests
 		{
 			Kernel.Register(Component.For(typeof(ClassWithTwoParametersWithSameType)).Named("test"));
 			Kernel.Register(Component.For<ICommon>().ImplementedBy(typeof(CommonImpl1)).Named("test2"));
-			var resolved = Kernel.Resolve(typeof(ClassWithTwoParametersWithSameType), Arguments.Empty);
+			var resolved = Kernel.Resolve(typeof(ClassWithTwoParametersWithSameType));
 			Assert.IsNotNull(resolved);
 		}
 

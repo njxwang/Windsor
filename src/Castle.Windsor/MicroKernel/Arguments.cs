@@ -27,12 +27,9 @@ namespace Castle.MicroKernel
 	/// </summary>
 	public sealed class Arguments : IDictionary
 	{
-		public static readonly Arguments Empty = new Arguments { isReadOnly = true };
-
 		private static readonly ArgumentsComparer Comparer = new ArgumentsComparer();
 
 		private readonly IDictionary dictionary;
-		private bool isReadOnly;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Arguments"/> class that is empty.
@@ -75,11 +72,7 @@ namespace Castle.MicroKernel
 		public object this[object key]
 		{
 			get => dictionary[key];
-			set
-			{
-				EnsureWritable();
-				dictionary[key] = value;
-			}
+			set => dictionary[key] = value;
 		}
 
 		public int Count => dictionary.Count;
@@ -94,50 +87,23 @@ namespace Castle.MicroKernel
 
 		bool IDictionary.IsFixedSize => dictionary.IsFixedSize;
 
-		bool IDictionary.IsReadOnly => isReadOnly;
+		bool IDictionary.IsReadOnly => dictionary.IsReadOnly;
 
-		public void Remove(object key)
-		{
-			EnsureWritable();
-			dictionary.Remove(key);
-		}
+		public void Remove(object key) => dictionary.Remove(key);
 
-		public void Clear()
-		{
-			EnsureWritable();
-			dictionary.Clear();
-		}
+		public void Clear() => dictionary.Clear();
 
-		public Arguments Clone()
-		{
-			return new Arguments(dictionary);
-		}
+		public Arguments Clone() => new Arguments(dictionary);
 
-		void ICollection.CopyTo(Array array, int index)
-		{
-			dictionary.CopyTo(array, index);
-		}
+		void ICollection.CopyTo(Array array, int index) => dictionary.CopyTo(array, index);
 
-		public bool Contains(object key)
-		{
-			return dictionary.Contains(key);
-		}
+		public bool Contains(object key) => dictionary.Contains(key);
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		public IDictionaryEnumerator GetEnumerator()
-		{
-			return dictionary.GetEnumerator();
-		}
+		public IDictionaryEnumerator GetEnumerator() => dictionary.GetEnumerator();
 
-		public void Add(object key, object value)
-		{
-			EnsureWritable();
-			dictionary.Add(key, value);
-		}
+		public void Add(object key, object value) => dictionary.Add(key, value);
 
 		/// <summary>
 		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
@@ -223,14 +189,6 @@ namespace Castle.MicroKernel
 				AddTyped(item.GetType(), item);
 			}
 			return this;
-		}
-
-		private void EnsureWritable()
-		{
-			if (isReadOnly)
-			{
-				throw new NotSupportedException("Collection is read-only");
-			}
 		}
 
 		private sealed class ArgumentsComparer : IEqualityComparer<object>

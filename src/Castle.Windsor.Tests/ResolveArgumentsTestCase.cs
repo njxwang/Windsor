@@ -63,21 +63,21 @@ namespace CastleTests
 		public void Can_Resolve_using_Arguments_as_Dictionary()
 		{
 			var dictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments(dictionary)));
+			Assert.DoesNotThrow(() => Container.Resolve<Service>(Arguments.FromNamed(dictionary)));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Arguments_as_Dictionary()
 		{
 			var dictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments(dictionary)));
+			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(Arguments.FromNamed(dictionary)));
 		}
 
 		[Test]
 		public void Can_Resolve_using_Type_and_Arguments_as_Dictionary()
 		{
 			var dictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
-			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments(dictionary)));
+			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), Arguments.FromNamed(dictionary)));
 		}
 
 		[Test]
@@ -104,7 +104,7 @@ namespace CastleTests
 		[Test]
 		public void Can_Resolve_using_ReadOnlyDictionary()
 		{
-			IReadOnlyDictionary<string, object> readOnlyDictionary = new Dictionary<string, object>() { { "dependency", new Dependency() } };
+			IReadOnlyDictionary<string, object> readOnlyDictionary = new Dictionary<string, object> { { "dependency", new Dependency() } };
 			Assert.DoesNotThrow(() => Container.Resolve<Service>(readOnlyDictionary));
 		}
 

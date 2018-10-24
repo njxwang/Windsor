@@ -15,19 +15,19 @@
 namespace Castle.Facilities.TypedFactory.Internal
 {
 	using System;
-	using System.Collections;
 	using System.Diagnostics;
 	using System.Reflection;
 
 	using Castle.Core;
 	using Castle.Core.Internal;
+	using Castle.MicroKernel;
 	using Castle.MicroKernel.Registration;
 	using Castle.MicroKernel.Resolvers;
 
 	[Singleton]
 	public class DelegateFactory : ILazyComponentLoader
 	{
-		public IRegistration Load(string name, Type service, IDictionary arguments)
+		public IRegistration Load(string name, Type service, Arguments arguments)
 		{
 			if (service == null)
 			{

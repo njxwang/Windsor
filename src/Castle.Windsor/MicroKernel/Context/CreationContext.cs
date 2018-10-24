@@ -56,7 +56,7 @@ namespace Castle.MicroKernel.Context
 
 		private readonly Stack<ResolutionContext> resolutionStack;
 		private Arguments additionalArguments;
-		private IDictionary extendedProperties;
+		private Arguments extendedProperties;
 		private Type[] genericArguments;
 		private bool isResolving = true;
 
@@ -434,7 +434,7 @@ namespace Castle.MicroKernel.Context
 			private readonly bool requiresDecommission;
 			private readonly bool trackContext;
 			private Burden burden;
-			private IDictionary extendedProperties;
+			private Arguments extendedProperties;
 
 			public ResolutionContext(CreationContext context, IHandler handler, bool requiresDecommission, bool trackContext)
 			{

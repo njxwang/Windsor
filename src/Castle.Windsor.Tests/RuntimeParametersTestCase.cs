@@ -21,6 +21,7 @@ namespace Castle.MicroKernel.Tests
 	using Castle.MicroKernel.Registration;
 	using Castle.MicroKernel.Resolvers;
 	using Castle.MicroKernel.Tests.RuntimeParameters;
+	using Castle.Windsor;
 
 	using CastleTests;
 
@@ -95,7 +96,7 @@ namespace Castle.MicroKernel.Tests
 
 			var deps2 = new Dictionary<string, object> { { "cc", new CompC(12) }, { "myArgument", "ayende" } };
 
-			var instance_with_args = Container.Resolve<CompB>(new Arguments(deps2));
+			var instance_with_args = Container.Resolve<CompB>(deps2);
 
 			Assert.AreSame(deps2["cc"], instance_with_args.Compc, "Should get it from resolve params");
 			Assert.AreEqual("ayende", instance_with_args.MyArgument);
@@ -106,7 +107,7 @@ namespace Castle.MicroKernel.Tests
 		{
 			Container.Register(Component.For<CompA>().Named("compa"),
 			                   Component.For<CompB>().Named("compb"));
-			var compb = Container.Resolve<CompB>(new Arguments(dependencies));
+			var compb = Container.Resolve<CompB>(dependencies);
 
 			AssertDependencies(compb);
 		}

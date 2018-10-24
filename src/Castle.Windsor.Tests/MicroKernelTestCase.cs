@@ -112,7 +112,7 @@ namespace CastleTests
 				Component.For<ICustomer>().ImplementedBy<CustomerImpl>().Named("cust").LifeStyle.Transient);
 			Kernel.Register(Component.For<ExtendedCustomer>().Named("custex").LifeStyle.Transient);
 
-			var dictionary = new Arguments(new Dictionary<string, object> { { "Name", "name" }, { "Address", "address" }, { "Age", "18" } });
+			var dictionary = new Arguments { { "Name", "name" }, { "Address", "address" }, { "Age", "18" } };
 			var customer = Kernel.Resolve<ICustomer>("cust", dictionary);
 
 			Assert.AreEqual("name", customer.Name);
@@ -230,7 +230,7 @@ namespace CastleTests
 			Assert.IsNull(customer.Name);
 			Assert.AreEqual(0, customer.Age);
 
-			var dictionary = new Arguments(new Dictionary<string, object> { { "Name", "name" }, { "Address", "address" }, { "Age", "18" } });
+			var dictionary = new Arguments { { "Name", "name" }, { "Address", "address" }, { "Age", "18" } };
 			customer = Kernel.Resolve<ICustomer>("cust", dictionary);
 
 			Assert.AreEqual("name", customer.Name);
@@ -245,12 +245,11 @@ namespace CastleTests
 			Kernel.Register(Component.For<ICustomer>().ImplementedBy<CustomerImpl2>().Named("cust2"));
 			var customer = Kernel.Resolve<ICustomer>("cust");
 
-			var dictionary = new Arguments(new Dictionary<string, object>
-			{
+			var dictionary = new Arguments {
 				{ "name", "customer2Name" },
 				{ "address", "customer2Address" },
 				{ "age", 18 }
-			});
+			};
 			var customer2 = Kernel.Resolve<ICustomer>("cust2", dictionary);
 
 			Assert.AreEqual(customer.GetType(), typeof(CustomerImpl));

@@ -23,13 +23,14 @@ namespace Castle.MicroKernel
 
 	/// <summary>
 	/// Represents a collection of named and typed arguments used for dependencies resolved via <see cref="IWindsorContainer.Resolve{T}(Castle.MicroKernel.Arguments)"/>
-	/// Please see: https://github.com/castleproject/Windsor/blob/master/docs/arguments.md
+	/// See: https://github.com/castleproject/Windsor/blob/master/docs/arguments.md
 	/// </summary>
-	public sealed class Arguments : IDictionary
+	public sealed class Arguments
+		: IEnumerable<KeyValuePair<object, object>> // Required for collection initializers
 	{
 		private static readonly ArgumentsComparer Comparer = new ArgumentsComparer();
 
-		private readonly IDictionary dictionary;
+		private readonly Dictionary<object, object> dictionary;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Arguments"/> class that is empty.
@@ -37,6 +38,14 @@ namespace Castle.MicroKernel
 		public Arguments()
 		{
 			dictionary = new Dictionary<object, object>(Comparer);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Arguments"/> class that contains elements copied from the specified <see cref="Arguments"/>.
+		/// </summary>
+		public Arguments(Arguments arguments)
+		{
+			dictionary = new Dictionary<object, object>(arguments.dictionary, Comparer);
 		}
 
 		/// <summary>
@@ -55,55 +64,26 @@ namespace Castle.MicroKernel
 			dictionary[key] = value;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Arguments"/> class that contains elements copied from the specified <see cref="IDictionary"/>.
-		/// </summary>
-		public Arguments(IDictionary arguments) : this()
-		{
-			foreach (DictionaryEntry item in arguments)
-			{
-				Add(item.Key, item.Value);
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the value with the specified key.
-		/// </summary>
-		public object this[object key]
-		{
-			get => dictionary[key];
-			set => dictionary[key] = value;
-		}
-
-		public int Count => dictionary.Count;
-
-		public ICollection Keys => dictionary.Keys;
-
-		public ICollection Values => dictionary.Values;
-
-		bool ICollection.IsSynchronized => dictionary.IsSynchronized;
-
-		object ICollection.SyncRoot => dictionary.SyncRoot;
-
-		bool IDictionary.IsFixedSize => dictionary.IsFixedSize;
-
-		bool IDictionary.IsReadOnly => dictionary.IsReadOnly;
-
-		public void Remove(object key) => dictionary.Remove(key);
-
-		public void Clear() => dictionary.Clear();
-
-		public Arguments Clone() => new Arguments(dictionary);
-
-		void ICollection.CopyTo(Array array, int index) => dictionary.CopyTo(array, index);
-
-		public bool Contains(object key) => dictionary.Contains(key);
-
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		public IDictionaryEnumerator GetEnumerator() => dictionary.GetEnumerator();
+		public IEnumerator<KeyValuePair<object, object>> GetEnumerator() => dictionary.GetEnumerator();
 
 		public void Add(object key, object value) => dictionary.Add(key, value);
+		public bool Contains(object key) => dictionary.ContainsKey(key);
+		public int Count => dictionary.Count;
+		public void Remove(object key) => dictionary.Remove(key);
+
+		public object this[object key]
+		{
+			get
+			{
+				if (dictionary.TryGetValue(key, out object value))
+				{
+					return value;
+				}
+				return null;
+			}
+			set => dictionary[key] = value;
+		}
 
 		/// <summary>
 		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
@@ -123,8 +103,6 @@ namespace Castle.MicroKernel
 			}
 			return this;
 		}
-
-		// ===== Named =====
 
 		/// <summary>
 		/// Adds a named argument. If the argument already exists it will be overwritten.
@@ -159,8 +137,6 @@ namespace Castle.MicroKernel
 			return this;
 		}
 
-		// ===== Typed =====
-
 		/// <summary>
 		/// Adds a typed argumen. If the argument for this type already exists it will be overwritten.
 		/// </summary>
@@ -189,6 +165,15 @@ namespace Castle.MicroKernel
 				AddTyped(item.GetType(), item);
 			}
 			return this;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Arguments"/> class and adds a collection of named arguments,
+		/// <see cref="Dictionary{TKey,TValue}"/> implements this interface.
+		/// </summary>
+		public static Arguments FromNamed(IEnumerable<KeyValuePair<string, object>> arguments)
+		{
+			return new Arguments().AddNamed(arguments);
 		}
 
 		private sealed class ArgumentsComparer : IEqualityComparer<object>

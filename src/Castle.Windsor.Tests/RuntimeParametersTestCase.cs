@@ -61,7 +61,7 @@ namespace Castle.MicroKernel.Tests
 			Container.Register(Component.For<CompA>().Named("compa"),
 			                   Component.For<CompB>().Named("compb"));
 			TestDelegate act = () =>
-			                   Container.Resolve<CompB>(new Arguments("myArgument", 123));
+			                   Container.Resolve<CompB>(new Arguments().AddNamed("myArgument", 123));
 
 			var exception = Assert.Throws<DependencyResolverException>(act);
 			Assert.AreEqual(

@@ -60,7 +60,7 @@ namespace Castle.Windsor.Tests.MicroKernel
 		{
 			Container.Register(Component.For<HasNullableIntProperty>());
 
-			var arguments = new Arguments("SomeVal", 5);
+			var arguments = new Arguments().AddNamed("SomeVal", 5);
 			var s = Container.Resolve<HasNullableIntProperty>(arguments);
 
 			Assert.IsNotNull(s.SomeVal);
@@ -72,7 +72,7 @@ namespace Castle.Windsor.Tests.MicroKernel
 		{
 			Container.Register(Component.For<HasNullableDoubleConstructor>());
 
-			var s = Container.Resolve<HasNullableDoubleConstructor>(new Arguments("foo", 5d));
+			var s = Container.Resolve<HasNullableDoubleConstructor>(new Arguments().AddNamed("foo", 5d));
 			Assert.IsNotNull(s);
 		}
 
@@ -85,7 +85,7 @@ namespace Castle.Windsor.Tests.MicroKernel
 					.DependsOn(Parameter.ForKey("x").Eq("abc"))
 				);
 
-			Container.Resolve<HasStringAndIntDependency>(new Arguments("y", 1));
+			Container.Resolve<HasStringAndIntDependency>(new Arguments().AddNamed("y", 1));
 		}
 
 		[Test]

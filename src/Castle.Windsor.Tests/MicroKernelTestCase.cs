@@ -214,7 +214,7 @@ namespace CastleTests
 		public void ResolveAll_resolves_when_dependency_provideded_inline()
 		{
 			Kernel.Register(Component.For<ICommon>().ImplementedBy(typeof(CommonImplWithDependency)).Named("test"));
-			var services = Kernel.ResolveAll<ICommon>(new Arguments("customer", new CustomerImpl()));
+			var services = Kernel.ResolveAll<ICommon>(new Arguments().AddNamed("customer", new CustomerImpl()));
 			Assert.AreEqual(1, services.Length);
 		}
 

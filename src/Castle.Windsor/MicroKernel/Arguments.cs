@@ -48,22 +48,6 @@ namespace Castle.MicroKernel
 			dictionary = new Dictionary<object, object>(arguments.dictionary, Comparer);
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Arguments"/> class that contains the specified named argument.
-		/// </summary>
-		public Arguments(string key, object value) : this()
-		{
-			dictionary[key] = value;
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Arguments"/> class that contains the specified typed argument.
-		/// </summary>
-		public Arguments(Type key, object value) : this()
-		{
-			dictionary[key] = value;
-		}
-
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		public IEnumerator<KeyValuePair<object, object>> GetEnumerator() => dictionary.GetEnumerator();
 

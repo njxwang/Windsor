@@ -70,7 +70,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
+		/// Adds a collection of named and/or typed arguments.
 		/// </summary>
 		public Arguments Add(IEnumerable<KeyValuePair<object, object>> arguments)
 		{
@@ -78,7 +78,7 @@ namespace Castle.MicroKernel
 			{
 				if (item.Key is string || item.Key is Type)
 				{
-					this[item.Key] = item.Value;
+					Add(item.Key, item.Value);
 				}
 				else
 				{
@@ -89,11 +89,11 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Adds a named argument. If the argument already exists it will be overwritten.
+		/// Adds a named argument.
 		/// </summary>
 		public Arguments AddNamed(string key, object value)
 		{
-			this[key] = value;
+			Add(key, value);
 			return this;
 		}
 
@@ -116,22 +116,22 @@ namespace Castle.MicroKernel
 		{
 			foreach (DictionaryEntry item in new ReflectionBasedDictionaryAdapter(instance))
 			{
-				this[item.Key] = item.Value;
+				Add(item.Key, item.Value);
 			}
 			return this;
 		}
 
 		/// <summary>
-		/// Adds a typed argument. If the argument for this type already exists it will be overwritten.
+		/// Adds a typed argument.
 		/// </summary>
 		public Arguments AddTyped(Type key, object value)
 		{
-			this[key] = value;
+			Add(key, value);
 			return this;
 		}
 
 		/// <summary>
-		/// Adds a typed argument. If the argument for this type already exists it will be overwritten.
+		/// Adds a typed argument.
 		/// </summary>
 		public Arguments AddTyped<TDependencyType>(TDependencyType value)
 		{
@@ -140,7 +140,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Adds a collection of typed arguments. If an argument for the type already exists it will be overwritten.
+		/// Adds a collection of typed arguments.
 		/// </summary>
 		public Arguments AddTyped(IEnumerable<object> arguments)
 		{
@@ -152,7 +152,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Adds a collection of typed arguments. If an argument for the type already exists it will be overwritten.
+		/// Adds a collection of typed arguments.
 		/// </summary>
 		public Arguments AddTyped(params object[] arguments)
 		{

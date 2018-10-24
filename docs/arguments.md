@@ -40,8 +40,8 @@ new Arguments()
 Named arguments can also be added from a plain old C# object or from properties of an anonymous type:
 ```csharp
 new Arguments()
-	.AddNamedProperties(myPOCO) // plain old C# object with public properties
-	.AddNamedProperties(new { logLevel = LogLevel.High }); // anonymous type
+	.AddProperties(myPOCO) // plain old C# object with public properties
+	.AddProperties(new { logLevel = LogLevel.High }); // anonymous type
 ```
 
 #### Typed Arguments

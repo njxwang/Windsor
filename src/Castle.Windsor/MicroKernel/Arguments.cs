@@ -88,9 +88,28 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
 		/// </summary>
-		public Arguments Add(IDictionary arguments)
+		public Arguments Add(IEnumerable<DictionaryEntry> arguments)
 		{
 			foreach (DictionaryEntry item in arguments)
+			{
+				if (item.Key is string || item.Key is Type)
+				{
+					this[item.Key] = item.Value;
+				}
+				else
+				{
+					throw new ArgumentException($"The argument '{item.Key}' should be of type string or System.Type.");
+				}
+			}
+			return this;
+		}
+
+		/// <summary>
+		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
+		/// </summary>
+		public Arguments Add(IEnumerable<KeyValuePair<object, object>> arguments)
+		{
+			foreach (KeyValuePair<object, object> item in arguments)
 			{
 				if (item.Key is string || item.Key is Type)
 				{
@@ -120,7 +139,7 @@ namespace Castle.MicroKernel
 		{
 			foreach (var item in arguments)
 			{
-				this[item.Key] = item.Value;
+				AddNamed(item.Key, item.Value);
 			}
 			return this;
 		}
@@ -128,7 +147,7 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Adds a collection of named arguments from public properties of a standard or anonymous type.
 		/// </summary>
-		public Arguments AddNamedProperties(object instance)
+		public Arguments AddProperties(object instance)
 		{
 			foreach (DictionaryEntry item in new ReflectionBasedDictionaryAdapter(instance))
 			{
@@ -138,7 +157,7 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
-		/// Adds a typed argumen. If the argument for this type already exists it will be overwritten.
+		/// Adds a typed argument. If the argument for this type already exists it will be overwritten.
 		/// </summary>
 		public Arguments AddTyped(Type key, object value)
 		{
@@ -158,9 +177,9 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Adds a collection of typed arguments. If an argument for the type already exists it will be overwritten.
 		/// </summary>
-		public Arguments AddTyped(params object[] arguments)
+		public Arguments AddTyped(IEnumerable<object> arguments)
 		{
-			foreach (var item in arguments)
+			foreach (object item in arguments)
 			{
 				AddTyped(item.GetType(), item);
 			}
@@ -174,6 +193,32 @@ namespace Castle.MicroKernel
 		public static Arguments FromNamed(IEnumerable<KeyValuePair<string, object>> arguments)
 		{
 			return new Arguments().AddNamed(arguments);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Arguments"/> class and adds a collection of named arguments
+		/// from public properties of a standard or anonymous type.
+		/// </summary>
+		public static Arguments FromProperties(object instance)
+		{
+			return new Arguments().AddProperties(instance);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Arguments"/> class and adds a collection of typed arguments,
+		/// <see cref="Dictionary{TKey,TValue}"/> implements this interface.
+		/// </summary>
+		public static Arguments FromTyped(IEnumerable<KeyValuePair<Type, object>> arguments)
+		{
+			return new Arguments().AddTyped(arguments);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Arguments"/> class and adds a collection of typed arguments.
+		/// </summary>
+		public static Arguments FromTyped(IEnumerable<object> arguments)
+		{
+			return new Arguments().AddTyped(arguments);
 		}
 
 		private sealed class ArgumentsComparer : IEqualityComparer<object>

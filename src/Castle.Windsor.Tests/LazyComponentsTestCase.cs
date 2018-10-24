@@ -166,7 +166,7 @@ namespace CastleTests
 			var a = new A();
 			var arguments = new Arguments().AddTyped(a);
 			var missingArguments = Container.Resolve<Lazy<B>>();
-			var hasArguments = Container.Resolve<Lazy<B>>(new Arguments().AddNamedProperties(new { arguments }));
+			var hasArguments = Container.Resolve<Lazy<B>>(Arguments.FromProperties(new { arguments }));
 
 			B ignore;
 			Assert.Throws<DependencyResolverException>(() => ignore = missingArguments.Value);
@@ -181,7 +181,7 @@ namespace CastleTests
 			Container.Register(Component.For<A>().Named("1"),
 			                   Component.For<A>().Named("2"));
 
-			var lazyA = Container.Resolve<Lazy<A>>(new Arguments().AddNamedProperties(new { overrideComponentName = "2" }));
+			var lazyA = Container.Resolve<Lazy<A>>(Arguments.FromProperties(new { overrideComponentName = "2" }));
 
 			var a2 = Container.Resolve<A>("2");
 			Assert.AreSame(a2, lazyA.Value);

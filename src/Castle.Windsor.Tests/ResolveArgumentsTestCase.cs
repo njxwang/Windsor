@@ -38,25 +38,25 @@ namespace CastleTests
 		[Test]
 		public void Can_Resolve_using_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve<Service>(new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.Resolve<Service>(Arguments.FromProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.ResolveAll<IDependencyWithManyImplementations>(Arguments.FromProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
 		public void Can_Resolve_using_Type_and_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.Resolve(typeof(Service), Arguments.FromProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]
 		public void Can_ResolveAll_using_Type_and_Arguments_as_Properties()
 		{
-			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), new Arguments().AddNamedProperties(new { Dependency = new Dependency() })));
+			Assert.DoesNotThrow(() => Container.ResolveAll(typeof(IDependencyWithManyImplementations), Arguments.FromProperties(new { Dependency = new Dependency() })));
 		}
 
 		[Test]

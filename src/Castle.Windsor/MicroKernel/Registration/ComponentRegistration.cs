@@ -283,7 +283,12 @@ namespace Castle.MicroKernel.Registration
 		/// </summary>
 		public ComponentRegistration<TService> DependsOn(IDictionary dependencies)
 		{
-			return DependsOn(new Arguments().Add(dependencies.Cast<DictionaryEntry>()));
+			var arguments = new Arguments();
+			foreach (DictionaryEntry item in dependencies)
+			{
+				arguments.Add(item.Key, item.Value);
+			}
+			return DependsOn(arguments);
 		}
 
 		/// <summary>

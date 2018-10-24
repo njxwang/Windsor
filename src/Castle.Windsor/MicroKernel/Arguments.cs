@@ -72,25 +72,6 @@ namespace Castle.MicroKernel
 		/// <summary>
 		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
 		/// </summary>
-		public Arguments Add(IEnumerable<DictionaryEntry> arguments)
-		{
-			foreach (DictionaryEntry item in arguments)
-			{
-				if (item.Key is string || item.Key is Type)
-				{
-					this[item.Key] = item.Value;
-				}
-				else
-				{
-					throw new ArgumentException($"The argument '{item.Key}' should be of type string or System.Type.");
-				}
-			}
-			return this;
-		}
-
-		/// <summary>
-		/// Adds a collection of named and/or typed arguments. If an argument already exists it will be overwritten.
-		/// </summary>
 		public Arguments Add(IEnumerable<KeyValuePair<object, object>> arguments)
 		{
 			foreach (KeyValuePair<object, object> item in arguments)

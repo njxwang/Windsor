@@ -152,6 +152,18 @@ namespace Castle.MicroKernel
 		}
 
 		/// <summary>
+		/// Adds a collection of typed arguments. If an argument for the type already exists it will be overwritten.
+		/// </summary>
+		public Arguments AddTyped(params object[] arguments)
+		{
+			foreach (object item in arguments)
+			{
+				AddTyped(item.GetType(), item);
+			}
+			return this;
+		}
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="Arguments"/> class and adds a collection of named arguments,
 		/// <see cref="Dictionary{TKey,TValue}"/> implements this interface.
 		/// </summary>
